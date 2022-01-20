@@ -18,7 +18,6 @@ class Solution:
                 blanks = [quotient] * (len(nowWords)-1)
                 for j in range(remainder):
                     blanks[j] += 1
-
                 nowSentence = nowWords[0]
                 for j in range(1, len(nowWords)):
                     nowSentence += ' ' * blanks[j-1]
