@@ -1,15 +1,18 @@
-import re
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        s = s.lower()
-        s.strip()
+        s = s.lower().strip()
         if not s:
             return True
-        ss = ''
-        i = 0
-        p = re.compile('[a-z0-9]')
-        while i < len(s):
-            if p.match(s[i]):
-                ss += s[i]
-            i += 1
-        return ss == ss[::-1]
+        l, r = 0, len(s) - 1
+        while l < r:
+            if not s[l].isalnum():
+                l += 1
+                continue
+            if not s[r].isalnum():
+                r -= 1
+                continue
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+        return True
