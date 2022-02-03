@@ -9,7 +9,6 @@ class Node:
 
 class Solution:
     def copyRandomList(self, head: 'Node') -> 'Node':
-        from collections import defaultdict
         if not head:
             return
         cur, dic = head, {}
