@@ -1,6 +1,6 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        self.wordDict = wordDict
+        self.wordDict = set(wordDict)
         self.ret = []
         self.dfs(s, [])
         return self.ret
