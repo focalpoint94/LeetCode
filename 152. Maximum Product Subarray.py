@@ -1,17 +1,19 @@
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        ret = -int(1e9)
+        ret = -float('inf')
         prod = 1
         for num in nums:
-            prod *= num
-            ret = max(ret, prod)
+            ret = max(ret, num)
             if num == 0:
                 prod = 1
-        
-        prod = 1
-        for i in range(len(nums)-1, -1, -1):
-            prod *= nums[i]
+                continue
+            prod *= num
             ret = max(ret, prod)
-            if nums[i] == 0:
+        prod = 1
+        for num in nums[::-1]:
+            if num == 0:
                 prod = 1
+                continue
+            prod *= num
+            ret = max(ret, prod)
         return ret
