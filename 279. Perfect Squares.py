@@ -1,20 +1,15 @@
 class Solution:
-    def numSquares(self, n: int) -> int:
-        psns = []
-        x = 1
-        while x * x <= n:
-            psns.append(x*x)
-            x += 1
+    def numSquares(self, n):
+        self.PSN = set([i*i for i in range(1, int(n**0.5)+1)])
+        for h in range(1, n+1):
+            if self.helper(n, h):
+                return h
+    
+    def helper(self, n, depth):
+        if depth == 1:
+            return n in self.PSN
         
-        nums, cnt = {n}, 0
-        while nums:
-            next_nums = set()
-            cnt += 1
-            for num in nums:
-                for psn in psns:
-                    if psn == num:
-                        return cnt
-                    if num < psn:
-                        break
-                    next_nums.add(num-psn)
-            nums = next_nums
+        for x in self.PSN:
+            if self.helper(n-x, depth-1):
+                return True
+        return False
