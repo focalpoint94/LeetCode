@@ -4,7 +4,7 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-from collections import deque
+
 class Codec:
 
     def serialize(self, root):
@@ -15,20 +15,24 @@ class Codec:
         """
         if not root:
             return ''
-        data = ''
         
-        q = deque()
-        q.append(root)
+        ret = str(root.val) + ' '
+        q = [root]
         while q:
-            node = q.popleft()
-            if not node:
-                data += 'N,'
-            else:
-                data += str(node.val) + ','
-                q.append(node.left)
-                q.append(node.right)
-        return data[:-1]
-        
+            next_q = []
+            for node in q:
+                if node.left:
+                    next_q.append(node.left)
+                    ret += str(node.left.val) + ' '
+                else:
+                    ret += 'null '
+                if node.right:
+                    next_q.append(node.right)
+                    ret += str(node.right.val) + ' '
+                else:
+                    ret += 'null '
+            q = next_q
+        return ret[:-1]
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -38,25 +42,25 @@ class Codec:
         """
         if not data:
             return None
-        data = data.split(',')
-        head = TreeNode(int(data[0]))
-        ptr = 1
-        q = deque()
-        q.append(head)
+        
+        data = data.split(' ')
+        root, j = TreeNode(val=int(data[0])), 1
+        q = [root]
         while q:
-            node = q.popleft()
-            if node:
-                if data[ptr] != 'N':
-                    node.left = TreeNode(int(data[ptr]))
-                ptr += 1
-                if data[ptr] != 'N':
-                    node.right = TreeNode(int(data[ptr]))
-                ptr += 1
-                q.append(node.left)
-                q.append(node.right)
-        return head
+            next_q = []
+            for node in q:
+                if data[j] != 'null':
+                    node.left = TreeNode(val=int(data[j]))
+                    next_q.append(node.left)
+                j += 1
+                if data[j] != 'null':
+                    node.right = TreeNode(val=int(data[j]))
+                    next_q.append(node.right)
+                j += 1
+            q = next_q
+        return root
 
-       
+        
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
