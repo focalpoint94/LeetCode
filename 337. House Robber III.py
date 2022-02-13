@@ -6,28 +6,18 @@
 #         self.right = right
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
-        prv, now = self.dfs(root)
-        return now
+        a, b = self.dfs(root)
+        return max(a, b)
         
     def dfs(self, node):
-        # now: max profit until this node
-        # prv: max profit until this node's children
         if not node.left and not node.right:
-            prv = 0
-            now = node.val
-        
-        elif not node.right:
-            l_prv, prv = self.dfs(node.left)
-            now = max(prv, l_prv+node.val)
-            
-        elif not node.left:
-            r_prv, prv = self.dfs(node.right)
-            now = max(prv, r_prv+node.val)
-            
-        else:
-            l_prv, l_now = self.dfs(node.left)
-            r_prv, r_now = self.dfs(node.right)
-            prv = l_now + r_now
-            now = max(prv, l_prv+r_prv+node.val)
-        
-        return [prv, now]
+            return 0, node.val
+        if node.left and node.right:
+            a, b = self.dfs(node.left)
+            c, d = self.dfs(node.right)
+            return max(a+c, a+d, b+c, b+d), node.val+a+c
+        if node.left:
+            a, b = self.dfs(node.left)
+            return max(a,b), a+node.val
+        a, b = self.dfs(node.right)
+        return max(a,b), a+node.val
