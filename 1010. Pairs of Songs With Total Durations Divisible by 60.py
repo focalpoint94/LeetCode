@@ -1,10 +1,11 @@
 class Solution:
     def numPairsDivisibleBy60(self, time: List[int]) -> int:
-        time = [t % 60 for t in time]
-        from collections import Counter
-        c = Counter()
-        ans = 0
+        from collections import defaultdict
+        ret = 0
+        for i, t in enumerate(time):
+            time[i] = t % 60
+        dic = defaultdict(int)
         for t in time:
-            ans += c[60-t] if t > 0 else c[0]
-            c[t] += 1
-        return ans
+            ret += dic[0] if t == 0 else dic[60-t]
+            dic[t] += 1
+        return ret
