@@ -1,11 +1,27 @@
 class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
-        return self.helper(s, k)
-        
-    def helper(self, s, k):
-        if not s or len(s) < k:
+        if not s:
             return 0
-        c = min(set(s), key=s.count)
-        if s.count(c) >= k:
+        from collections import defaultdict
+        dic = defaultdict(int)
+        for c in s:
+            dic[c] += 1
+        chars = set()
+        for key, val in dic.items():
+            if val < k:
+                chars.add(key)
+        if not chars:
             return len(s)
-        return max(self.longestSubstring(t, k) for t in s.split(c))
+        indexs = []
+        for i, c in enumerate(s):
+            if c in chars:
+                indexs.append(i)
+        ret = 0
+        prev = 0
+        for idx in indexs:
+            ns = s[prev:idx]
+            ret = max(ret, self.longestSubstring(ns, k))
+            prev = idx+1
+        ns = s[prev:]
+        ret = max(ret, self.longestSubstring(ns, k))
+        return ret
