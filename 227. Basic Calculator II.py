@@ -1,19 +1,19 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        num, stack, sign = 0, [], "+"
+        num, stack, sign = 0, [], '+'
         s += ' '
-        for i in range(len(s)):
-            if s[i].isdigit():
-                num = 10 * num + int(s[i])
-            elif s[i] != ' ' or i == len(s) - 1:
+        for i, c in enumerate(s):
+            if c.isdigit():
+                num = num * 10 + int(c)
+            elif i == len(s) - 1 or c != ' ':
                 if sign == '+':
                     stack.append(num)
                 elif sign == '-':
                     stack.append(-num)
                 elif sign == '*':
                     stack.append(stack.pop()*num)
-                else:
+                elif sign == '/':
                     stack.append(int(stack.pop()/num))
-                sign = s[i]
+                sign = c
                 num = 0
         return sum(stack)
