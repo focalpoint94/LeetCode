@@ -1,25 +1,24 @@
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
-        def num_bins(val):
-            cnt = 0
-            summed, maxsum = 0, 0
-            for num in nums:
-                summed += num
-                if summed > val:
-                    summed = num
-                    cnt += 1
-                maxsum = max(maxsum, summed)
-            maxsum = max(maxsum, summed)
-            return cnt + 1, maxsum
-        
+        self.nums = nums
         ret = sum(nums)
-        left, right = max(nums), sum(nums)
+        left, right = max(nums), ret
         while left <= right:
             mid = (left + right) // 2
-            k, maxsum = num_bins(mid)
-            if k <= m:
+            numGroup = self.numGroup(mid)
+            if numGroup <= m:
                 ret = min(ret, mid)
                 right = mid - 1
             else:
                 left = mid + 1
         return ret
+        
+    def numGroup(self, limit):
+        ret = 0
+        culm = 0
+        for num in self.nums:
+            culm += num
+            if culm > limit:
+                ret += 1
+                culm = num
+        return ret + 1
