@@ -1,24 +1,25 @@
+import functools
 class Solution:
     def wordsTyping(self, sentence: List[str], rows: int, cols: int) -> int:
-        self.sentence = [len(word) for word in sentence]
+        self.sentence = sentence
         self.cols = cols
-        self.dp = {}
-        total, idx = 0, 0
-        for i in range(rows):
-            cnt, idx = self.calc(idx)
-            total += cnt
-        return total
-    
-    def calc(self, idx):
-        if idx in self.dp:
-            return self.dp[idx]
-        cnt = 0 
-        summed, i = 0, idx
-        while summed + self.sentence[i] <= self.cols:
-            summed += self.sentence[i] + 1
-            i += 1
-            if i == len(self.sentence):
-                cnt += 1
-                i = 0
-        self.dp[idx] = cnt, i
-        return cnt, i
+        ret = 0
+        startIdx = 0
+        for row in range(rows):
+            numTimes, startIdx = self.fit(startIdx)
+            ret += numTimes
+        return ret
+        
+    @lru_cache()
+    def fit(self, startIdx):
+        numTimes = 0
+        occupied, idx = 0, startIdx
+        word = self.sentence[idx]
+        while occupied + len(word) <= self.cols:
+            occupied += len(word) + 1
+            idx += 1
+            if idx == len(self.sentence):
+                idx = 0
+                numTimes += 1
+            word = self.sentence[idx]
+        return numTimes, idx
