@@ -38,20 +38,24 @@ class Solution:
         """
         self.robot = robot
         self.visited = set()
-        self.dy, self.dx = [-1, 0, 1, 0], [0, 1, 0, -1]
-        self.backtrack(0, 0, 0)
-        
-    def backtrack(self, y, x, d):
+        self.backTrack()
+    
+    def backTrack(self, cell=(0, 0), d=0):
         self.robot.clean()
-        self.visited.add((y, x))
+        self.visited.add(cell)
+        dy, dx = [-1, 0, 1, 0], [0, 1, 0, -1]
         for i in range(4):
-            new_d = (d + i) % 4
-            next_y, next_x = y + self.dy[new_d], x + self.dx[new_d]
-            if (next_y, next_x) not in self.visited and self.robot.move():
-                self.backtrack(next_y, next_x, new_d)
-                self.robot.turnRight()
-                self.robot.turnRight()
-                self.robot.move()
-                self.robot.turnRight()
-                self.robot.turnRight()
+            nowDir = (d + i) % 4
+            nextCell = (cell[0] + dy[nowDir], cell[1] + dx[nowDir])
+            if nextCell not in self.visited and self.robot.move():
+                self.backTrack(nextCell, nowDir)
+                self.goBack()
             self.robot.turnRight()
+        
+    def goBack(self):
+        self.robot.turnRight()
+        self.robot.turnRight()
+        self.robot.move()
+        self.robot.turnRight()
+        self.robot.turnRight()
+    
