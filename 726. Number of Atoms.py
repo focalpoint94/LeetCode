@@ -45,7 +45,7 @@ class Solution:
 #             else:
 #                 j = i
 #                 i += 1
-#                 while i < N and formula[i].isalpha() and formula[i].islower():
+#                 while i < N and formula[i].islower():
 #                     i += 1
 #                 name = formula[j:i]
 #                 j = i
@@ -61,3 +61,4 @@ class Solution:
 #                 ret += k
 #                 ret += str(stack[0][k])
 #         return ret
+        
