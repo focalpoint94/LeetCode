@@ -1,16 +1,20 @@
+from collections import defaultdict
 class Solution:
     def numMatchingSubseq(self, s: str, words: List[str]) -> int:
-        from collections import defaultdict
-        dic = defaultdict(list)
+        reg = defaultdict(list)
         for word in words:
-            dic[word[0]].append(word)
+            reg[word[0]].append(word)
+        
         ret = 0
-        for char in s:
-            temp = copy.deepcopy(dic[char])
-            dic[char] = []
-            for word in temp:
+        for c in s:
+            updated = []
+            for word in reg[c]:
                 if len(word) == 1:
                     ret += 1
                 else:
-                    dic[word[1]].append(word[1:])
+                    if word[1] == c:
+                        updated.append(word[1:])
+                    else:
+                        reg[word[1]].append(word[1:])                    
+            reg[c] = updated
         return ret
