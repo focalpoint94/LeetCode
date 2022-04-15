@@ -11,9 +11,4 @@ class Solution:
                         stack.pop()
                 else:
                     stack.append(path)
-        ret = '/'
-        for path in stack:
-            ret += path + '/'
-        if not stack:
-            return ret
-        return ret[:-1]
+        return '/' + '/'.join(stack)
