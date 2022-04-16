@@ -4,47 +4,40 @@ class Solution:
         Do not return anything, modify matrix in-place instead.
         """
         m, n = len(matrix), len(matrix[0])
+        flipFirstRow = False
+        flipFirstCol = False
+        if matrix[0][0] == 0:
+            flipFirstRow, flipFirstCol = True, True
+        else:
+            for i in range(1, n):
+                if matrix[0][i] == 0:
+                    flipFirstRow = True
+                    break
+            for i in range(1, m):
+                if matrix[i][0] == 0:
+                    flipFirstCol = True
+                    break
         
-        for y in range(m):
-            for x in range(n):
-                if matrix[y][x] == 0:
-                    self.inspect_row(matrix, y, x)
-                    self.inspect_column(matrix, y, x)
-                elif matrix[y][x] == 'row inspected zero':
-                    self.inspect_column(matrix, y, x)
-                elif matrix[y][x] == 'column inspected zero':
-                    self.inspect_row(matrix, y, x)
-                else:
-                    continue
-        for y in range(m):
-            for x in range(n):
-                if type(matrix[y][x]) != int:
-                    matrix[y][x] = 0
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
         
-    def inspect_row(self, matrix, y, x):
-        for i in range(len(matrix[0])):
-            cur = matrix[y][i]
-            if cur == 0:
-                matrix[y][i] = 'row inspected zero'
-            elif cur == 'row inspected zero':
-                continue
-            elif cur == 'column inspected zero':
-                matrix[y][i] = 'both inspected zero'
-            elif cur == 'both inspected zero':
-                continue
-            else:
-                matrix[y][i] = 'to be zero'
-    
-    def inspect_column(self, matrix, y, x):
-        for i in range(len(matrix)):
-            cur = matrix[i][x]
-            if cur == 0:
-                matrix[i][x] = 'column inspected zero'
-            elif cur == 'row inspected zero':
-                matrix[i][x] = 'both inspected zero'
-            elif cur == 'column inspected zero':
-                continue
-            elif cur == 'both inspected zero':
-                continue
-            else:
-                matrix[i][x] = 'to be zero'
+        for j in range(1, n):
+            if matrix[0][j] == 0:
+                for i in range(1, m):
+                    matrix[i][j] = 0
+        
+        for i in range(1, m):
+            if matrix[i][0] == 0:
+                for j in range(1, n):
+                    matrix[i][j] = 0
+        
+        if flipFirstRow:
+            for i in range(n):
+                matrix[0][i] = 0
+        
+        if flipFirstCol:
+            for i in range(m):
+                matrix[i][0] = 0
