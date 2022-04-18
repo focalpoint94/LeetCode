@@ -3,10 +3,8 @@ class Solution:
         reg, freq = None, None
         k = 0
         for i, num in enumerate(nums):
-            # update reg & freq
             if reg != num:
-                reg = num
-                freq = 1
+                reg, freq = num, 1
             else:
                 freq += 1
             if freq <= 2:
