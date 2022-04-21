@@ -12,24 +12,17 @@ class Solution:
     def connect(self, root: 'Node') -> 'Node':
         self.helper(root)
         return root
-        
-    def helper(self, node):
-        if not node:
-            return
-        leftmost, prev = None, None
-        cur = node
+    
+    def helper(self, leftMost):
+        dummy = prev = Node()
+        cur = leftMost
         while cur:
             if cur.left:
-                if not leftmost:
-                    leftmost, prev = cur.left, cur.left
-                else:
-                    prev.next = cur.left
-                    prev = cur.left
+                prev.next = cur.left
+                prev = cur.left
             if cur.right:
-                if not leftmost:
-                    leftmost, prev = cur.right, cur.right
-                else:
-                    prev.next = cur.right
-                    prev = cur.right
-            cur = cur.next   
-        self.helper(leftmost)
+                prev.next = cur.right
+                prev = cur.right
+            cur = cur.next
+        if dummy.next:
+            self.helper(dummy.next)
