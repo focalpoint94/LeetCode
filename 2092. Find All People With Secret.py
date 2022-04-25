@@ -61,3 +61,40 @@ class Solution:
                         knowing.add(v)
                         q.append(v)
         return knowing
+
+    
+'''
+Find/Union Solution
+'''
+from itertools import groupby
+
+class Solution:
+    def findAllPeople(self, n: int, meetings, firstPerson: int):
+        parents = [i for i in range(n)]
+        parents[firstPerson] = 0
+        
+        def find(a):
+            if a == parents[a]:
+                return a
+            parents[a] = find(parents[a])
+            return parents[a]
+        
+        def union(a, b):
+            pa, pb = find(a), find(b)
+            if pa == 0 or pb == 0:
+                parents[pa] = parents[pb] = 0
+            else:
+                parents[pb] = pa
+        
+        for _, grp in groupby(sorted(meetings, key=lambda x: x[2]), key=lambda x: x[2]):
+            group = []
+            for meeting in grp:
+                group.append(meeting)
+            for x, y, t in group:
+                union(x, y)
+            for x, y, t in group:
+                px = find(x)
+                if px != 0:
+                    parents[x] = x
+                    parents[y] = y
+        return [i for i in range(n) if find(i) == 0]
