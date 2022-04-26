@@ -66,7 +66,7 @@ class Solution:
 '''
 Find/Union Solution
 '''
-from itertools import groupby
+from itertools import groupby, tee
 
 class Solution:
     def findAllPeople(self, n: int, meetings, firstPerson: int):
@@ -87,12 +87,10 @@ class Solution:
                 parents[pb] = pa
         
         for _, grp in groupby(sorted(meetings, key=lambda x: x[2]), key=lambda x: x[2]):
-            group = []
-            for meeting in grp:
-                group.append(meeting)
-            for x, y, t in group:
+            grp1, grp2 = tee(grp, 2)
+            for x, y, t in grp1:
                 union(x, y)
-            for x, y, t in group:
+            for x, y, t in grp2:
                 px = find(x)
                 if px != 0:
                     parents[x] = x
