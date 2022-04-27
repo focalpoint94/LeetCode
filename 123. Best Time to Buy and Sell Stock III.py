@@ -1,25 +1,16 @@
-class Solution(object):
-    def maxProfit(self, prices):
-        """
-        :type prices: List[int]
-        :rtype: int
-        """
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
-        leftprofit, rightprofit = [0] * n, [0] * n
+        leftProfit, rightProfit = [0] * n, [0] * n
         
-        leftmin = prices[0]
+        leftMin = prices[0]
         for i in range(1, n):
-            price = prices[i]
-            leftmin = min(leftmin, price)
-            leftprofit[i] = max(leftprofit[i-1], price - leftmin)
+            leftMin = min(leftMin, prices[i])
+            leftProfit[i] = max(leftProfit[i-1], prices[i]-leftMin)
         
-        rightmax = prices[-1]
+        rightMax = prices[-1]
         for i in range(n-2, -1, -1):
-            price = prices[i]
-            rightmax = max(rightmax, price)
-            rightprofit[i] = max(rightprofit[i+1], rightmax - price)
+            rightMax = max(rightMax, prices[i])
+            rightProfit[i] = max(rightProfit[i+1], rightMax-prices[i])
         
-        maxprofit = 0
-        for i in range(n):
-            maxprofit = max(maxprofit, leftprofit[i]+rightprofit[i])
-        return maxprofit
+        return max(p1 + p2 for p1, p2 in zip(leftProfit, rightProfit))
