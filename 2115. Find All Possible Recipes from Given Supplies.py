@@ -4,7 +4,6 @@ class Solution:
         
         self.recipes, self.supplies = set(recipes), set(supplies)
         self.ingredients = {recipes[i]: ingredients[i] for i in range(len(recipes))}
-        
         self.dp = {}
         
         for recipe in recipes:
