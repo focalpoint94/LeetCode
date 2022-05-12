@@ -1,15 +1,16 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        self.wordDict = set(wordDict)
+        self.wordSet = wordDict
         self.ret = []
-        self.dfs(s, [])
+        self.backtrack(s, [])
         return self.ret
         
-    def dfs(self, s, path):
+    def backtrack(self, s, path):
         if not s:
             self.ret.append(' '.join(path))
             return
-        for word in self.wordDict:
+        
+        for word in self.wordSet:
             k = len(word)
             if s[:k] == word:
-                self.dfs(s[k:], path+[word])
+                self.backtrack(s[k:], path+[word])
