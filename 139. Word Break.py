@@ -1,18 +1,16 @@
+from functools import lru_cache
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        self.wordDict = wordDict
-        self.visited = set()
-        return self.dfs(s)
+        self.s = s
+        self.wordSet = wordDict
+        return self.backtrack(0)
         
-    def dfs(self, s):
-        if not s:
+    @lru_cache()    
+    def backtrack(self, i):
+        if i == len(self.s):
             return True
-        if s in self.visited:
-            return False
-        for word in self.wordDict:
-            k = len(word)
-            if s[:k] == word:
-                if self.dfs(s[k:]):
+        for j in range(i+1, len(self.s)+1):
+            if self.s[i:j] in self.wordSet:
+                if self.backtrack(j):
                     return True
-        self.visited.add(s)
         return False
