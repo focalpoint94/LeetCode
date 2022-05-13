@@ -5,21 +5,19 @@
 #         self.next = None
 
 class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
-        if not head:
-            return
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         slow, fast = head, head
-        intersect = None
+        met = None
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
             if slow == fast:
-                intersect = slow
+                met = slow
                 break
-        if intersect == None:
+        if met is None:
             return None
-        p1, p2 = head, intersect
-        while p1 != p2:
-            p1 = p1.next
-            p2 = p2.next
-        return p1
+        slow = head
+        while slow != met:
+            slow = slow.next
+            met = met.next
+        return slow
