@@ -9,12 +9,10 @@ class Solution:
         
         def inplace_reverse(l, r):
             while l < r:
-                temp = nums[l]
-                nums[l] = nums[r]
-                nums[r] = temp
+                nums[l], nums[r] = nums[r], nums[l]
                 l += 1
                 r -= 1
         
         inplace_reverse(0, len(nums)-1-k)
         inplace_reverse(len(nums)-k, len(nums)-1)
-        inplace_reverse(0, len(nums)-1)        
+        inplace_reverse(0, len(nums)-1)
