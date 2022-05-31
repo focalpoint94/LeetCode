@@ -3,7 +3,7 @@ class Solution:
         if n <= 1:
             return 0
         isPrime = [True] * n
-        
+        isPrime[0] = isPrime[1] = 0
         p = 2
         while p * p <= n:
             if isPrime[p]:
@@ -12,9 +12,4 @@ class Solution:
                     isPrime[q] = False
                     q += p
             p += 1
-        
-        ret = 0
-        for i in range(2, n):
-            if isPrime[i]:
-                ret += 1
-        return ret
+        return sum(isPrime)
