@@ -1,27 +1,25 @@
+from collections import Counter
 class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
-        if not s:
-            return 0
-        from collections import defaultdict
-        dic = defaultdict(int)
-        for c in s:
-            dic[c] += 1
-        chars = set()
-        for key, val in dic.items():
-            if val < k:
-                chars.add(key)
-        if not chars:
+        if k == 1:
             return len(s)
-        indexs = []
-        for i, c in enumerate(s):
-            if c in chars:
-                indexs.append(i)
-        ret = 0
-        prev = 0
-        for idx in indexs:
-            ns = s[prev:idx]
-            ret = max(ret, self.longestSubstring(ns, k))
-            prev = idx+1
-        ns = s[prev:]
-        ret = max(ret, self.longestSubstring(ns, k))
-        return ret
+        
+        def helper(s):
+            if not s:
+                return 0
+            counter = Counter(s)
+            invalid_chars = set()
+            for char, freq in counter.items():
+                if freq < k:
+                    invalid_chars.add(char)
+            if not invalid_chars:
+                return len(s)            
+            ret, i = 0, 0
+            for j in range(len(s)):
+                if s[j] in invalid_chars:
+                    ret = max(ret, helper(s[i:j]))
+                    i = j + 1
+            ret = max(ret, helper(s[i:]))
+            return ret
+        
+        return helper(s)
