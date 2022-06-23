@@ -9,6 +9,11 @@ class Solution:
             points.append([l, h, 0])
             points.append([r, h, 1])
         
+        # location should be considered first
+        # isEnd should be considered next
+        # if p1 and p2 has the same location and isEnd,
+        # if both are beginning, then higher comes first
+        # if both are ending, then shorter comes first
         def compare(p1, p2):
             if p1[0] != p2[0]:
                 return p1[0] - p2[0]
@@ -17,7 +22,8 @@ class Solution:
             if p1[2] == 0:
                 return -(p1[1] - p2[1])
             return p1[1] - p2[1]
-            
+        
+        # use func-to-key
         points.sort(key=cmp_to_key(compare))
         
         ret = []
