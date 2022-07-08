@@ -1,15 +1,15 @@
 class Solution:
-    def numSquares(self, n):
-        self.PSN = set([i*i for i in range(1, int(n**0.5)+1)])
-        for h in range(1, n+1):
-            if self.helper(n, h):
-                return h
-    
-    def helper(self, n, depth):
-        if depth == 1:
-            return n in self.PSN
+    def numSquares(self, n: int) -> int:
+        PSNs = set([i*i for i in range(1, int(n**0.5)+1)])
         
-        for x in self.PSN:
-            if self.helper(n-x, depth-1):
-                return True
-        return False
+        def iddfs(n, h):
+            if h == 1:
+                return n in PSNs
+            for PSN in PSNs:
+                if iddfs(n-PSN, h-1):
+                    return True
+            return False
+        
+        for h in range(1, n+1):
+            if iddfs(n, h):
+                return h
