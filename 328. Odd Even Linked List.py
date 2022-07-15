@@ -11,7 +11,7 @@ class Solution:
         even_ptr = even_head = ListNode()
         cur = head.next
         cnt = 2
-        while cur != None:
+        while cur is not None:
             if cnt % 2 != 0:
                 odd_ptr.next = cur
                 odd_ptr = cur
