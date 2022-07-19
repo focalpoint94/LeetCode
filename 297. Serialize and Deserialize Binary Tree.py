@@ -4,7 +4,7 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
-
+from collections import deque
 class Codec:
 
     def serialize(self, root):
@@ -14,25 +14,9 @@ class Codec:
         :rtype: str
         """
         if not root:
-            return ''
+            return 'N'
+        return '.'.join([str(root.val), self.serialize(root.left), self.serialize(root.right)]) 
         
-        ret = str(root.val) + ' '
-        q = [root]
-        while q:
-            next_q = []
-            for node in q:
-                if node.left:
-                    next_q.append(node.left)
-                    ret += str(node.left.val) + ' '
-                else:
-                    ret += 'null '
-                if node.right:
-                    next_q.append(node.right)
-                    ret += str(node.right.val) + ' '
-                else:
-                    ret += 'null '
-            q = next_q
-        return ret[:-1]
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -40,26 +24,22 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        if not data:
-            return None
+        data = data.split('.')
+        data = deque(data)
         
-        data = data.split(' ')
-        root, j = TreeNode(val=int(data[0])), 1
-        q = [root]
-        while q:
-            next_q = []
-            for node in q:
-                if data[j] != 'null':
-                    node.left = TreeNode(val=int(data[j]))
-                    next_q.append(node.left)
-                j += 1
-                if data[j] != 'null':
-                    node.right = TreeNode(val=int(data[j]))
-                    next_q.append(node.right)
-                j += 1
-            q = next_q
-        return root
-
+        def helper():
+            value = data.popleft()
+            if value == 'N':
+                return None
+            node = TreeNode(value)
+            node.left = helper()
+            node.right = helper()
+            return node
+        
+        return helper()
+        
+        
+        
         
 
 # Your Codec object will be instantiated and called as such:
