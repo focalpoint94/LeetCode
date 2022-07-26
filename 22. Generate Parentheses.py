@@ -1,16 +1,15 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        self.ret = []
-        self.helper(n, n, '')
-        return self.ret
-    
-    def helper(self, l, r, path):
-        if l == 0:
-            self.ret.append(path + (')' * r))
-            return
-        if l == r:
-            self.helper(l-1, r, path + '(')
-        else:
-            self.helper(l-1, r, path + '(')
-            self.helper(l, r-1, path + ')')
-    
+        ret = []
+        
+        def dfs(opn, end, path):
+            if opn == 0:
+                ret.append(path + ')' * end)
+                return
+            if opn > end:
+                return
+            dfs(opn-1, end, path+'(')
+            dfs(opn, end-1, path+')')
+        
+        dfs(n, n, '')
+        return ret
