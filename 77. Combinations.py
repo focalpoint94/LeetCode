@@ -1,12 +1,16 @@
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
-        self.ret = []
-        self.helper([i+1 for i in range(n)], k, [])
-        return self.ret
+        ret = []
+        nums = [i for i in range(1, n+1)]
         
-    def helper(self, nums, k, path):
-        if k == 0:
-            self.ret.append(path)
-            return
-        for i, num in enumerate(nums):
-            self.helper(nums[i+1:], k-1, path+[num])
+        def backtrack(nums, path):
+            nonlocal k
+            if len(path) == k:
+                ret.append(path)
+                return
+            
+            for i, num in enumerate(nums):
+                backtrack(nums[i+1:], path+[nums[i]])
+        
+        backtrack(nums, [])
+        return ret
