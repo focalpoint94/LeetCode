@@ -1,6 +1,7 @@
 class Solution:
     def minArea(self, image: List[List[str]], x: int, y: int) -> int:
         m, n = len(image), len(image[0])
+        # swap
         y, x = x, y
         # search ymin
         ymin = y
