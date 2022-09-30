@@ -1,0 +1,28 @@
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        maxWordLength = 31
+        
+        wordDict = [set() for i in range(maxWordLength)]
+        for word in words:
+            wordDict[len(word)].add(word)
+            
+        candidates = wordDict[1]
+        for l in range(2, maxWordLength):
+            newCandidates = set()
+            removes = set()
+            for word in wordDict[l]:
+                if word[:-1] in wordDict[l-1]:
+                    newCandidates.add(word)
+                else:
+                    removes.add(word)
+            if not newCandidates:
+                break
+            else:
+                candidates = newCandidates
+                wordDict[l] -= removes
+        
+        candidates = list(candidates)
+        candidates.sort()
+        if candidates:
+            return candidates[0]
+        return ""
