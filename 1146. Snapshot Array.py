@@ -1,22 +1,28 @@
+from bisect import bisect
 class SnapshotArray:
-    from collections import defaultdict
+
     def __init__(self, length: int):
-        self.array = defaultdict(dict)
+        # Time Complexity: O(N * logN)
+        # Space Complexity: O(length)
+        self.array = [[[0], [-1]] for i in range(length)]
         self.snap_id = 0
-        
+        self.changes = {}
+
     def set(self, index: int, val: int) -> None:
-        self.array[self.snap_id][index] = val
+        self.changes[index] = val
 
     def snap(self) -> int:
+        for index, value in self.changes.items():
+            self.array[index][0].append(value)
+            self.array[index][1].append(self.snap_id)
+        self.changes = {}
         self.snap_id += 1
-        for idx in self.array[self.snap_id-1]:
-            self.array[self.snap_id][idx] = self.array[self.snap_id-1][idx]
         return self.snap_id - 1
 
     def get(self, index: int, snap_id: int) -> int:
-        if index in self.array[snap_id]:
-            return self.array[snap_id][index]
-        return 0
+        j = bisect(self.array[index][1], snap_id)
+        return self.array[index][0][j-1]
+        
 
 
 # Your SnapshotArray object will be instantiated and called as such:
