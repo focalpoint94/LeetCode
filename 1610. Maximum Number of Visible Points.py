@@ -1,7 +1,7 @@
+from math import atan2, pi
+from bisect import bisect_right
 class Solution:
     def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:   
-        from math import atan2, pi
-        from bisect import bisect_right
         numLoc = 0
         angles = []
         for point in points:
