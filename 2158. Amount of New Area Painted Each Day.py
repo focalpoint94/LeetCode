@@ -1,3 +1,26 @@
+class Solution:
+    def amountPainted(self, paint: List[List[int]]) -> List[int]:
+        ret = [0] * len(paint)
+        painted = [0] * 50001
+        for i, (s, e) in enumerate(paint):
+            j = s
+            while j < e:
+                if painted[j] != 0:
+                    next_j = painted[j]
+                    painted[j] = max(painted[j], e)
+                    j = next_j
+                else:
+                    painted[j] = e
+                    ret[i] += 1
+                    j += 1
+        return ret
+
+
+
+
+
+
+
 from bisect import bisect_left, bisect_right
 class Solution:
     def amountPainted(self, paint: List[List[int]]) -> List[int]:
